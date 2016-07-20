@@ -25,17 +25,17 @@
     window.imageReady = factory();
   }
 }(function (){
-  var list = [];
+  var queue = [];
   var intervalId = null;
 
   var tick = function (){
     var i = 0;
 
-    for (; i < list.length; i++) {
-      list[i].end ? list.splice(i--, 1) : list[i]();
+    for (; i < queue.length; i++) {
+      queue[i].end ? queue.splice(i--, 1) : queue[i]();
     }
 
-    !list.length && stop();
+    !queue.length && stop();
   };
 
   var stop = function (){
@@ -110,12 +110,12 @@
     // 无论何时只允许出现一个定时器，减少浏览器性能损耗
     !check.end && check();
 
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].url === url) return;
+    for (var i = 0; i < queue.length; i++) {
+      if (queue[i].url === url) return;
     }
 
     if (!check.end) {
-      list.push(check);
+      queue.push(check);
 
       if (!intervalId) intervalId = setInterval(tick, 150);
     }
