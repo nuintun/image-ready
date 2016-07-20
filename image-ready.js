@@ -16,7 +16,7 @@
 // @param	{String}	图片路径
 // @param	{Function}	获取尺寸的回调函数 (参数1接收width；参数2接收height)
 // @param	{Function}	加载错误的回调函数 (可选)
-(function (){
+(function (window){
   var list = [];
   var intervalId = null;
 
@@ -35,7 +35,7 @@
     intervalId = null;
   };
 
-  this.imageReady = function (url, callback, error){
+  window.imageReady = function (url, callback, error){
     var width, height;
     var doc = document;
     var accuracy = 1024;
@@ -112,4 +112,4 @@
       if (!intervalId) intervalId = setInterval(tick, 150);
     }
   };
-})();
+})(window);
