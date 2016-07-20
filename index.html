@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Image Ready</title>
+    <script type="text/javascript" src="./image-ready.js"></script>
+    <style type="text/css">
+      body {
+        font: 12px 'microsoft yahei', tahoma, arial;
+        _font-family: tahoma, arial;
+      }
+      a {
+        color: #0259c4;
+      }
+      a:hover {
+        color: #900;
+      }
+      .demoinfo {
+        background: #f7f7f7;
+        padding: 10px;
+        border: 1px solid #eee;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+      }
+      .tips {
+        color: #ccc;
+      }
+      #path {
+        background: #fafafa;
+        width: 36em;
+        padding: 5px;
+        border: 2px solid #0259c4;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+      }
+      #path:focus {
+        background: #fffff7;
+        outline: 0;
+      }
+      #submit {
+        background: #0259c4;
+        cursor: pointer;
+        color: #fff;
+        padding: 5px 10px;
+        border: 2px solid #0259c4;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demoinfo">
+      <p><strong>演示：</strong></p>
+      <div style="line-height: 40px; height: 40px;">
+        <input id="path" value="./vistas.jpg" title="图片地址"/>
+        <input id="submit" type="button" value="加 载"/>
+        <a id="clsCache" style="color: #0259c4;" href="javascript:;">清空缓存</a>
+        <em class="tips">（浏览器会缓存加载过后的图片）</em>
+      </div>
+      <div id="status" style="display: none;">
+        <p><strong>通过文件头信息获取尺寸： </strong><span id="statusReady"></span></p>
+        <p><strong>通过加载完毕后获取尺寸： </strong><span id="statusLoad"></span></p>
+      </div>
+      <div id="imageWrap"></div>
+    </div>
+    <script type="text/javascript">
+      (function (){
+        var $ = function (id){
+          return document.getElementById(id);
+        };
+
+        // 传统图片预加载
+        var imageLoad = function (url, callback, error){
+          var img = new Image();
+
+          img.src = url;
+
+          if (img.complete) {
+            callback(img.width, img.height);
+          } else {
+            img.onload = function (){
+              callback(img.width, img.height);
+              img.onload = null;
+            };
+          }
+
+          img.onerror = function (){
+            img.onload = null;
+            error && error();
+          };
+        };
+
+        var imgUrl;
+        var path = $('path');
+        var submit = $('submit');
+        var clsCache = $('clsCache');
+        var status = $('status');
+        var statusReady = $('statusReady');
+        var statusLoad = $('statusLoad');
+        var imageWrap = $('imageWrap');
+
+        submit.onclick = function (){
+          imgUrl = path.value;
+          status.style.display = 'block';
+          statusLoad.innerHTML = statusReady.innerHTML = 'Loading...';
+          imageWrap.innerHTML = '<img src="' + imgUrl + '" />';
+
+          // 使用占位方式快速获取大小
+          imageReady(imgUrl, function (width, height){
+            statusReady.innerHTML = 'width = ' + width + '; height = ' + height;
+          }, function (){
+            statusReady.innerHTML = 'Img Error!';
+          });
+
+          // 使用传统方式获取大小
+          imageLoad(imgUrl, function (width, height){
+            statusLoad.innerHTML = 'width = ' + width + '; height = ' + height;
+          }, function (){
+            statusLoad.innerHTML = 'Img Error!';
+          });
+        };
+
+        clsCache.onclick = function (){
+          var value = path.value;
+
+          path.value = (value.split('?')[1] ? value.split('?')[0] : value)
+            + '?v=' + new Date().getTime();
+          status.style.display = 'none';
+          imageWrap.innerHTML = '';
+        };
+      }());
+    </script>
+  </body>
+</html>
