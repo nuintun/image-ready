@@ -12,11 +12,19 @@
 
 'use strict';
 
-// 图片头数据加载就绪事件
-// @param	{String}	图片路径
-// @param	{Function}	获取尺寸的回调函数 (参数1接收width；参数2接收height)
-// @param	{Function}	加载错误的回调函数 (可选)
-(function (window){
+/**
+ * 图片头数据加载就绪事件
+ * @param url {String} 图片路径
+ * @param ready {Function} 获取尺寸的回调函数 (参数1接收width；参数2接收height)
+ * @param [error] {Function} 加载错误的回调函数 (可选)
+ */
+(function (factory){
+  if (typeof module === 'object') {
+    module.exports = factory();
+  } else {
+    window.imageReady = factory();
+  }
+}(function (){
   var list = [];
   var intervalId = null;
 
@@ -35,21 +43,21 @@
     intervalId = null;
   };
 
-  window.imageReady = function (url, callback, error){
+  return function (url, ready, error){
     var width, height;
     var doc = document;
-    var accuracy = 1024;
+    var accuracy = 0;
     var div, check, end;
     var image = new Image();
-    var offsetWidth, offsetHeight;
+    var naturalWidth, naturalHeight;
     var container = doc.body || doc.getElementsByTagName('head')[0];
 
     image.src = url;
 
-    if (!callback) return image;
+    if (!ready) return image;
 
     // 如果图片被缓存，则直接返回缓存数据
-    if (image.complete) return callback(image.width, image.height);
+    if (image.complete) return ready(image.width, image.height);
 
     // 向页面插入隐秘图像，用来监听图片是否占位
     div = doc.createElement('div');
@@ -59,13 +67,13 @@
     div.appendChild(image);
     container.appendChild(div);
 
-    width = image.offsetWidth;
-    height = image.offsetHeight;
+    width = image.naturalWidth || image.offsetWidth;
+    height = image.naturalHeight || image.offsetHeight;
 
     // 完全加载完毕的事件
     image.onload = function (){
       end();
-      callback(image.width, image.height);
+      ready(image.naturalWidth || image.width, image.naturalHeight || image.height);
     };
 
     // 加载错误后的事件
@@ -76,12 +84,12 @@
 
     // 检测图片是否已经占位
     check = function (){
-      offsetWidth = image.offsetWidth;
-      offsetHeight = image.offsetHeight;
+      naturalWidth = image.naturalWidth || image.offsetWidth;
+      naturalHeight = image.naturalHeight || image.offsetHeight;
 
-      if (offsetWidth !== width || offsetHeight !== height || offsetWidth * offsetHeight > accuracy) {
+      if (naturalWidth !== width || naturalHeight !== height || naturalWidth * naturalHeight > accuracy) {
         end();
-        callback(offsetWidth, offsetHeight);
+        ready(naturalWidth, naturalHeight);
       }
     };
 
@@ -112,4 +120,4 @@
       if (!intervalId) intervalId = setInterval(tick, 150);
     }
   };
-})(window);
+}));
