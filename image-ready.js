@@ -40,6 +40,7 @@
 
   var stop = function (){
     clearInterval(intervalId);
+
     intervalId = null;
   };
 
