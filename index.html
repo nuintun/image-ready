@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Image Ready</title>
     <script type="text/javascript" src="./image-ready.js"></script>
     <style type="text/css">
@@ -55,8 +55,8 @@
     <div class="demoinfo">
       <p><strong>演示：</strong></p>
       <div style="line-height: 40px; height: 40px;">
-        <input id="path" value="./vistas.jpg" title="图片地址"/>
-        <input id="submit" type="button" value="加 载"/>
+        <input id="path" value="./vistas.jpg" title="图片地址" />
+        <input id="submit" type="button" value="加 载" />
         <a id="clsCache" style="color: #0259c4;" href="javascript:;">清空缓存</a>
         <em class="tips">（浏览器会缓存加载过后的图片）</em>
       </div>
@@ -67,13 +67,13 @@
       <div id="imageWrap"></div>
     </div>
     <script type="text/javascript">
-      (function (){
-        var $ = function (id){
+      (function() {
+        var $ = function(id) {
           return document.getElementById(id);
         };
 
         // 传统图片预加载
-        var imageLoad = function (url, callback, error){
+        var imageLoad = function(url, callback, error) {
           var img = new Image();
 
           img.src = url;
@@ -81,13 +81,13 @@
           if (img.complete) {
             callback(img.width, img.height);
           } else {
-            img.onload = function (){
+            img.onload = function() {
               callback(img.width, img.height);
               img.onload = null;
             };
           }
 
-          img.onerror = function (){
+          img.onerror = function() {
             img.onload = null;
             error && error();
           };
@@ -102,36 +102,43 @@
         var statusLoad = $('statusLoad');
         var imageWrap = $('imageWrap');
 
-        submit.onclick = function (){
+        submit.onclick = function() {
           imgUrl = path.value;
           status.style.display = 'block';
           statusLoad.innerHTML = statusReady.innerHTML = 'Loading...';
           imageWrap.innerHTML = '<img src="' + imgUrl + '" />';
 
           // 使用占位方式快速获取大小
-          imageReady(imgUrl, function (width, height){
-            statusReady.innerHTML = 'width = ' + width + '; height = ' + height;
-          }, function (){
-            statusReady.innerHTML = 'Img Error!';
-          });
+          imageReady(
+            imgUrl,
+            function(width, height) {
+              statusReady.innerHTML = 'width = ' + width + '; height = ' + height;
+            },
+            function() {
+              statusReady.innerHTML = 'Img Error!';
+            }
+          );
 
           // 使用传统方式获取大小
-          imageLoad(imgUrl, function (width, height){
-            statusLoad.innerHTML = 'width = ' + width + '; height = ' + height;
-          }, function (){
-            statusLoad.innerHTML = 'Img Error!';
-          });
+          imageLoad(
+            imgUrl,
+            function(width, height) {
+              statusLoad.innerHTML = 'width = ' + width + '; height = ' + height;
+            },
+            function() {
+              statusLoad.innerHTML = 'Img Error!';
+            }
+          );
         };
 
-        clsCache.onclick = function (){
+        clsCache.onclick = function() {
           var value = path.value;
 
-          path.value = (value.split('?')[1] ? value.split('?')[0] : value)
-            + '?v=' + new Date().getTime();
+          path.value = (value.split('?')[1] ? value.split('?')[0] : value) + '?v=' + new Date().getTime();
           status.style.display = 'none';
           imageWrap.innerHTML = '';
         };
-      }());
+      })();
     </script>
   </body>
 </html>
