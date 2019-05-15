@@ -93,11 +93,13 @@
       var inspector = {
           ready: false,
           check: function () {
-              var naturalWidth = getImageWidth(image);
-              var naturalHeight = getImageHeigth(image);
-              if (naturalWidth !== width || naturalHeight !== height || naturalWidth * naturalHeight > accuracy) {
-                  imageReady();
-                  ready(naturalWidth, naturalHeight);
+              if (!inspector.ready) {
+                  var naturalWidth = getImageWidth(image);
+                  var naturalHeight = getImageHeigth(image);
+                  if (naturalWidth !== width || naturalHeight !== height || naturalWidth * naturalHeight > accuracy) {
+                      imageReady();
+                      ready(naturalWidth, naturalHeight);
+                  }
               }
           }
       };
@@ -113,12 +115,9 @@
               error();
           }
       };
-      inspector.check();
-      if (!inspector.ready) {
-          queue.push(inspector);
-          if (frameId == null) {
-              tick();
-          }
+      queue.push(inspector);
+      if (frameId == null) {
+          frameId = requestAnimationFrame(tick);
       }
   }
 

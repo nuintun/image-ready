@@ -104,12 +104,14 @@ export default function imageReady(url: string, ready: ready, error?: error) {
   const inspector: Inspector = {
     ready: false,
     check() {
-      const naturalWidth: number = getImageWidth(image);
-      const naturalHeight: number = getImageHeigth(image);
+      if (!inspector.ready) {
+        const naturalWidth: number = getImageWidth(image);
+        const naturalHeight: number = getImageHeigth(image);
 
-      if (naturalWidth !== width || naturalHeight !== height || naturalWidth * naturalHeight > accuracy) {
-        imageReady();
-        ready(naturalWidth, naturalHeight);
+        if (naturalWidth !== width || naturalHeight !== height || naturalWidth * naturalHeight > accuracy) {
+          imageReady();
+          ready(naturalWidth, naturalHeight);
+        }
       }
     }
   };
@@ -129,13 +131,9 @@ export default function imageReady(url: string, ready: ready, error?: error) {
     }
   };
 
-  inspector.check();
+  queue.push(inspector);
 
-  if (!inspector.ready) {
-    queue.push(inspector);
-
-    if (frameId == null) {
-      tick();
-    }
+  if (frameId == null) {
+    frameId = requestAnimationFrame(tick);
   }
 }
