@@ -117,7 +117,7 @@ export default function imageReady(url: string, ready: ready, error?: error) {
   // 完全加载完毕的事件
   image.onload = function() {
     imageReady();
-    ready(image.naturalWidth || image.width, image.naturalHeight || image.height);
+    ready(getImageWidth(image), getImageHeigth(image));
   };
 
   // 加载错误后的事件
