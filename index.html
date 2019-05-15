@@ -93,17 +93,18 @@
           };
         };
 
-        var imgUrl;
         var path = $('path');
+        var prevImgUrl = null;
+        var status = $('status');
         var submit = $('submit');
         var clsCache = $('clsCache');
-        var status = $('status');
-        var statusReady = $('statusReady');
-        var statusLoad = $('statusLoad');
         var imageWrap = $('imageWrap');
+        var statusLoad = $('statusLoad');
+        var statusReady = $('statusReady');
 
         submit.onclick = function() {
-          imgUrl = path.value;
+          var imgUrl = path.value;
+
           status.style.display = 'block';
           statusLoad.innerHTML = statusReady.innerHTML = 'Loading...';
           imageWrap.innerHTML = '<img src="' + imgUrl + '" />';
@@ -112,10 +113,14 @@
           imageReady(
             imgUrl,
             function(width, height) {
-              statusReady.innerHTML = 'width = ' + width + '; height = ' + height;
+              if (imgUrl === prevImgUrl) {
+                statusReady.innerHTML = 'width = ' + width + '; height = ' + height;
+              }
             },
             function() {
-              statusReady.innerHTML = 'Img Error!';
+              if (imgUrl === prevImgUrl) {
+                statusReady.innerHTML = 'Img Error!';
+              }
             }
           );
 
@@ -123,12 +128,18 @@
           imageLoad(
             imgUrl,
             function(width, height) {
-              statusLoad.innerHTML = 'width = ' + width + '; height = ' + height;
+              if (imgUrl === prevImgUrl) {
+                statusLoad.innerHTML = 'width = ' + width + '; height = ' + height;
+              }
             },
             function() {
-              statusLoad.innerHTML = 'Img Error!';
+              if (imgUrl === prevImgUrl) {
+                statusLoad.innerHTML = 'Img Error!';
+              }
             }
           );
+
+          prevImgUrl = imgUrl;
         };
 
         clsCache.onclick = function() {
@@ -137,6 +148,7 @@
           path.value = (value.split('?')[1] ? value.split('?')[0] : value) + '?v=' + new Date().getTime();
           status.style.display = 'none';
           imageWrap.innerHTML = '';
+          prevImgUrl = null;
         };
       })();
     </script>
