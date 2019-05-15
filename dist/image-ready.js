@@ -41,7 +41,7 @@
           return last;
       }
   }
-  function tick() {
+  function frame() {
       if (frameId == null) {
           cancelAnimationFrame(frameId);
       }
@@ -57,7 +57,7 @@
           }
       }
       if (queue.length) {
-          frameId = requestAnimationFrame(tick);
+          frameId = requestAnimationFrame(frame);
       }
       else {
           frameId = null;
@@ -117,7 +117,7 @@
       };
       queue.push(inspector);
       if (frameId == null) {
-          frameId = requestAnimationFrame(tick);
+          frameId = requestAnimationFrame(frame);
       }
   }
 

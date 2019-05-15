@@ -41,7 +41,7 @@ function remove(array: any[], index: number): any {
   }
 }
 
-function tick() {
+function frame() {
   if (frameId == null) {
     cancelAnimationFrame(frameId);
   }
@@ -61,7 +61,7 @@ function tick() {
   }
 
   if (queue.length) {
-    frameId = requestAnimationFrame(tick);
+    frameId = requestAnimationFrame(frame);
   } else {
     frameId = null;
   }
@@ -134,6 +134,6 @@ export default function imageReady(url: string, ready: ready, error?: error) {
   queue.push(inspector);
 
   if (frameId == null) {
-    frameId = requestAnimationFrame(tick);
+    frameId = requestAnimationFrame(frame);
   }
 }
