@@ -49,7 +49,7 @@ function frame() {
   let i: number = 0;
 
   while (i < queue.length) {
-    let inspector: Inspector = queue[i];
+    const inspector: Inspector = queue[i];
 
     inspector.check();
 
