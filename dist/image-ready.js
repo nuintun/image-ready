@@ -1,9 +1,8 @@
 /**
  * @module image-ready
- * @author aui
- * @author nuintun
  * @license MIT
  * @version 1.0.0
+ * @author nuintun
  * @description A tiny library for get the natural size of the image before the image is loaded.
  * @see https://github.com/nuintun/image-ready#readme
  */
