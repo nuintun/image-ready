@@ -123,4 +123,3 @@
   return imageReady;
 
 }));
-//# sourceMappingURL=image-ready.js.map
