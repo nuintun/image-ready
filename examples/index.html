@@ -79,21 +79,17 @@
         var imageLoad = function(url, callback, error) {
           var img = new Image();
 
-          img.src = url;
-
-          if (img.complete) {
+          img.onload = function() {
             callback(img.width, img.height);
-          } else {
-            img.onload = function() {
-              callback(img.width, img.height);
-              img.onload = null;
-            };
-          }
+            img.onload = null;
+          };
 
           img.onerror = function() {
             img.onload = null;
             error && error();
           };
+
+          img.src = url;
         };
 
         var path = $('path');
