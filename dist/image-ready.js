@@ -86,6 +86,7 @@
       var inspector = {
           ready: false,
           check: function () {
+              console.log('inspector', inspector);
               if (!inspector.ready) {
                   var naturalWidth = getImageWidth(image);
                   var naturalHeight = getImageHeigth(image);
@@ -99,11 +100,13 @@
       // 完全加载完毕的事件
       image.onload = function () {
           imageReady();
+          console.log('load', inspector);
           ready(getImageWidth(image), getImageHeigth(image));
       };
       // 加载错误后的事件
       image.onerror = function () {
           imageReady();
+          console.log('error', inspector);
           if (typeof error === 'function') {
               error();
           }

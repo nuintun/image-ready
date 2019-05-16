@@ -95,6 +95,7 @@ export default function imageReady(url: string, ready: ready, error?: error) {
   const inspector: Inspector = {
     ready: false,
     check() {
+      console.log('inspector', inspector);
       if (!inspector.ready) {
         const naturalWidth: number = getImageWidth(image);
         const naturalHeight: number = getImageHeigth(image);
@@ -110,13 +111,14 @@ export default function imageReady(url: string, ready: ready, error?: error) {
   // 完全加载完毕的事件
   image.onload = function() {
     imageReady();
+    console.log('load', inspector);
     ready(getImageWidth(image), getImageHeigth(image));
   };
 
   // 加载错误后的事件
   image.onerror = function() {
     imageReady();
-
+    console.log('error', inspector);
     if (typeof error === 'function') {
       error();
     }
