@@ -101,7 +101,14 @@
         var statusLoad = $('statusLoad');
         var statusReady = $('statusReady');
 
+        function getResult(width, height, start) {
+          var time = new Date() - start;
+
+          return 'width: ' + width + 'px; height: ' + height + 'px; time: ' + time + 'ms;';
+        }
+
         submit.onclick = function() {
+          var start = +new Date();
           var imgUrl = path.value;
 
           prevImgUrl = imgUrl;
@@ -114,7 +121,7 @@
             imgUrl,
             function(width, height) {
               if (imgUrl === prevImgUrl) {
-                statusReady.innerHTML = 'width = ' + width + '; height = ' + height;
+                statusReady.innerHTML = getResult(width, height, start);
               }
             },
             function() {
@@ -129,7 +136,7 @@
             imgUrl,
             function(width, height) {
               if (imgUrl === prevImgUrl) {
-                statusLoad.innerHTML = 'width = ' + width + '; height = ' + height;
+                statusLoad.innerHTML = getResult(width, height, start);
               }
             },
             function() {
