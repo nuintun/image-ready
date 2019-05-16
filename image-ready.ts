@@ -42,10 +42,6 @@ function remove(array: any[], index: number): any {
 }
 
 function frame() {
-  if (frameId != null) {
-    cancelAnimationFrame(frameId);
-  }
-
   let i: number = 0;
 
   while (i < queue.length) {
@@ -129,8 +125,10 @@ export default function imageReady(url: string, ready: ready, error?: error) {
   if (!image.complete && !inspector.ready) {
     queue.push(inspector);
 
-    if (frameId == null) {
-      frameId = requestAnimationFrame(frame);
+    if (frameId != null) {
+      cancelAnimationFrame(frameId);
     }
+
+    frameId = requestAnimationFrame(frame);
   }
 }

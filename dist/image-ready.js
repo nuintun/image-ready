@@ -41,9 +41,6 @@
       }
   }
   function frame() {
-      if (frameId != null) {
-          cancelAnimationFrame(frameId);
-      }
       var i = 0;
       while (i < queue.length) {
           var inspector = queue[i];
@@ -112,9 +109,10 @@
       image.src = url;
       if (!image.complete && !inspector.ready) {
           queue.push(inspector);
-          if (frameId == null) {
-              frameId = requestAnimationFrame(frame);
+          if (frameId != null) {
+              cancelAnimationFrame(frameId);
           }
+          frameId = requestAnimationFrame(frame);
       }
   }
 
