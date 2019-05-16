@@ -42,7 +42,7 @@ function remove(array: any[], index: number): any {
 }
 
 function frame() {
-  if (frameId == null) {
+  if (frameId != null) {
     cancelAnimationFrame(frameId);
   }
 

@@ -41,7 +41,7 @@
       }
   }
   function frame() {
-      if (frameId == null) {
+      if (frameId != null) {
           cancelAnimationFrame(frameId);
       }
       var i = 0;
