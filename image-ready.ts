@@ -82,16 +82,8 @@ function getImageHeigth(image: HTMLImageElement): number {
  * @param {function} [error]
  */
 export default function imageReady(url: string, ready: ready, error?: error) {
-  const image: HTMLImageElement = new Image();
-
-  // image.src = url;
-
-  // // 如果图片被缓存，则直接返回缓存数据
-  // if (image.complete) {
-  //   return ready(image.width, image.height);
-  // }
-
   const accuracy: number = 0;
+  const image: HTMLImageElement = new Image();
   const width: number = getImageWidth(image);
   const height: number = getImageHeigth(image);
 

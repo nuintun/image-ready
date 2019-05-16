@@ -75,13 +75,8 @@
    * @param {function} [error]
    */
   function imageReady(url, ready, error) {
-      var image = new Image();
-      // image.src = url;
-      // // 如果图片被缓存，则直接返回缓存数据
-      // if (image.complete) {
-      //   return ready(image.width, image.height);
-      // }
       var accuracy = 0;
+      var image = new Image();
       var width = getImageWidth(image);
       var height = getImageHeigth(image);
       var imageReady = function () {
