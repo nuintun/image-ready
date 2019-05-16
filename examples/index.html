@@ -104,6 +104,7 @@
         submit.onclick = function() {
           var imgUrl = path.value;
 
+          prevImgUrl = imgUrl;
           status.style.display = 'block';
           statusLoad.innerHTML = statusReady.innerHTML = 'Loading...';
           imageWrap.innerHTML = '<img src="' + imgUrl + '" />';
@@ -137,8 +138,6 @@
               }
             }
           );
-
-          prevImgUrl = imgUrl;
         };
 
         clsCache.onclick = function() {

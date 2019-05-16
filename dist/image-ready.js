@@ -110,6 +110,10 @@
       };
       // 设置图片地址
       image.src = url;
+      if (image.complete) {
+          imageReady();
+          return ready(getImageWidth(image), getImageHeigth(image));
+      }
       if (!inspector.ready) {
           queue.push(inspector);
           if (frameId == null) {
