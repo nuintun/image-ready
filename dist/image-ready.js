@@ -75,8 +75,13 @@
    * @param {function} [error]
    */
   function imageReady(url, ready, error) {
-      var accuracy = 0;
       var image = new Image();
+      // 设置图片地址
+      image.src = url;
+      if (image.complete) {
+          return ready(getImageWidth(image), getImageHeigth(image));
+      }
+      var accuracy = 0;
       var width = getImageWidth(image);
       var height = getImageHeigth(image);
       var imageReady = function () {
@@ -108,12 +113,6 @@
               error();
           }
       };
-      // 设置图片地址
-      image.src = url;
-      if (image.complete) {
-          imageReady();
-          return ready(getImageWidth(image), getImageHeigth(image));
-      }
       if (!inspector.ready) {
           queue.push(inspector);
           if (frameId == null) {

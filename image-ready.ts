@@ -82,8 +82,16 @@ function getImageHeigth(image: HTMLImageElement): number {
  * @param {function} [error]
  */
 export default function imageReady(url: string, ready: ready, error?: error) {
-  const accuracy: number = 0;
   const image: HTMLImageElement = new Image();
+
+  // 设置图片地址
+  image.src = url;
+
+  if (image.complete) {
+    return ready(getImageWidth(image), getImageHeigth(image));
+  }
+
+  const accuracy: number = 0;
   const width: number = getImageWidth(image);
   const height: number = getImageHeigth(image);
 
@@ -121,15 +129,6 @@ export default function imageReady(url: string, ready: ready, error?: error) {
       error();
     }
   };
-
-  // 设置图片地址
-  image.src = url;
-
-  if (image.complete) {
-    imageReady();
-
-    return ready(getImageWidth(image), getImageHeigth(image));
-  }
 
   if (!inspector.ready) {
     queue.push(inspector);
