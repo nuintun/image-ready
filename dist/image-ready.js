@@ -76,11 +76,6 @@
    */
   function imageReady(url, ready, error) {
       var image = new Image();
-      // 设置图片地址
-      image.src = url;
-      if (image.complete) {
-          return ready(getImageWidth(image), getImageHeigth(image));
-      }
       var accuracy = 0;
       var width = getImageWidth(image);
       var height = getImageHeigth(image);
@@ -113,7 +108,9 @@
               error();
           }
       };
-      if (!inspector.ready) {
+      // 设置图片地址
+      image.src = url;
+      if (!image.complete && !inspector.ready) {
           queue.push(inspector);
           if (frameId == null) {
               frameId = requestAnimationFrame(frame);

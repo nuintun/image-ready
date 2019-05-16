@@ -84,13 +84,6 @@ function getImageHeigth(image: HTMLImageElement): number {
 export default function imageReady(url: string, ready: ready, error?: error) {
   const image: HTMLImageElement = new Image();
 
-  // 设置图片地址
-  image.src = url;
-
-  if (image.complete) {
-    return ready(getImageWidth(image), getImageHeigth(image));
-  }
-
   const accuracy: number = 0;
   const width: number = getImageWidth(image);
   const height: number = getImageHeigth(image);
@@ -130,7 +123,10 @@ export default function imageReady(url: string, ready: ready, error?: error) {
     }
   };
 
-  if (!inspector.ready) {
+  // 设置图片地址
+  image.src = url;
+
+  if (!image.complete && !inspector.ready) {
     queue.push(inspector);
 
     if (frameId == null) {
