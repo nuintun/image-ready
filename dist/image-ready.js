@@ -63,10 +63,10 @@
       }
   }
   function getImageWidth(image) {
-      return image.naturalWidth || image.offsetWidth;
+      return image.naturalWidth || image.width;
   }
   function getImageHeigth(image) {
-      return image.naturalHeight || image.offsetHeight;
+      return image.naturalHeight || image.height;
   }
   /**
    *

@@ -68,11 +68,11 @@ function frame() {
 }
 
 function getImageWidth(image: HTMLImageElement): number {
-  return image.naturalWidth || image.offsetWidth;
+  return image.naturalWidth || image.width;
 }
 
 function getImageHeigth(image: HTMLImageElement): number {
-  return image.naturalHeight || image.offsetHeight;
+  return image.naturalHeight || image.height;
 }
 
 /**
