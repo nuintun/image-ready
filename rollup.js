@@ -26,11 +26,11 @@ async function build(inputOptions, outputOptions) {
   await bundle.write(outputOptions);
 
   const file = outputOptions.file;
+  const map = `${file}.map`;
+  const min = file.replace(/\.js$/i, '.min.js');
 
   console.log(`Build ${file} success!`);
-
-  const min = file.replace(/\.js$/i, '.min.js');
-  const map = `${file}.map`;
+  console.log(`Build ${map} success!`);
 
   const minify = terser.minify(
     { 'image-ready.js': (await fs.readFile(path.resolve(file))).toString() },
@@ -38,10 +38,8 @@ async function build(inputOptions, outputOptions) {
   );
 
   await fs.outputFile(min, outputOptions.banner + minify.code);
-  console.log(`Build ${min} success!`);
 
-  await fs.outputFile(map, minify.map);
-  console.log(`Build ${map} success!`);
+  console.log(`Build ${min} success!`);
 }
 
 const banner = `/**
@@ -65,6 +63,7 @@ const outputOptions = {
   indent: true,
   strict: true,
   format: 'umd',
+  sourcemap: true,
   name: 'imageReady',
   amd: { id: 'imageReady' },
   file: 'dist/image-ready.js'
