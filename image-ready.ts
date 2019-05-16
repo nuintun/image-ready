@@ -84,13 +84,12 @@ function getImageHeigth(image: HTMLImageElement): number {
 export default function imageReady(url: string, ready: ready, error?: error) {
   const image: HTMLImageElement = new Image();
 
-  // 设置图片地址
-  image.src = url;
+  // image.src = url;
 
-  // 如果图片被缓存，则直接返回缓存数据
-  if (image.complete) {
-    return ready(image.width, image.height);
-  }
+  // // 如果图片被缓存，则直接返回缓存数据
+  // if (image.complete) {
+  //   return ready(image.width, image.height);
+  // }
 
   const accuracy: number = 0;
   const width: number = getImageWidth(image);
@@ -130,6 +129,9 @@ export default function imageReady(url: string, ready: ready, error?: error) {
       error();
     }
   };
+
+  // 设置图片地址
+  image.src = url;
 
   queue.push(inspector);
 
