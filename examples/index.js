@@ -103,9 +103,9 @@
       // 设置图片地址
       image.src = url;
       if (!inspector.ready && !image.complete) {
-        queue.push(inspector);
         cancelAnimationFrame(frameId);
-        frameId = requestAnimationFrame(inspect);
+        queue.push(inspector);
+        inspect();
       }
     });
   }
