@@ -110,6 +110,7 @@
     });
   }
 
+  var images = ['./vistas.jpg', './game.jpg'];
   function $(id) {
     return document.getElementById(id);
   }
@@ -133,6 +134,7 @@
   var path = $('path');
   var status = $('status');
   var submit = $('submit');
+  var change = $('change');
   var imageWrap = $('imageWrap');
   var statusLoad = $('statusLoad');
   var statusReady = $('statusReady');
@@ -189,5 +191,15 @@
         }
       }
     );
+  };
+  change.onclick = function () {
+    var url = path.value;
+    var index = images.indexOf(url);
+    if (index >= 0 && index + 1 < images.length) {
+      var url_1 = images[index + 1];
+      path.value = url_1;
+    } else {
+      path.value = images[0];
+    }
   };
 });

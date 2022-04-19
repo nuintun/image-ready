@@ -1,5 +1,7 @@
 import imageReady from '../src';
 
+const images = ['./vistas.jpg', './game.jpg'];
+
 function $<E extends HTMLElement>(id: string): E {
   return document.getElementById(id) as E;
 }
@@ -31,6 +33,7 @@ function imageLoad(url: string): Promise<[width: number, height: number]> {
 const path = $<HTMLInputElement>('path');
 const status = $<HTMLDivElement>('status');
 const submit = $<HTMLInputElement>('submit');
+const change = $<HTMLInputElement>('change');
 const imageWrap = $<HTMLDivElement>('imageWrap');
 const statusLoad = $<HTMLSpanElement>('statusLoad');
 const statusReady = $<HTMLSpanElement>('statusReady');
@@ -92,4 +95,17 @@ submit.onclick = () => {
       }
     }
   );
+};
+
+change.onclick = () => {
+  const url = path.value;
+  const index = images.indexOf(url);
+
+  if (index >= 0 && index + 1 < images.length) {
+    const url = images[index + 1];
+
+    path.value = url;
+  } else {
+    path.value = images[0];
+  }
 };

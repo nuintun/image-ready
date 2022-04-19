@@ -6,7 +6,6 @@
     <style type="text/css">
       body {
         font: 12px 'microsoft yahei', tahoma, arial;
-        _font-family: tahoma, arial;
       }
       a {
         color: #0259c4;
@@ -15,35 +14,38 @@
         color: #900;
       }
       .demoinfo {
-        background: #f7f7f7;
         padding: 10px;
-        border: 1px solid #eee;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
         border-radius: 5px;
+        background: #f7f7f7;
+        border: 1px solid #eee;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
       }
       #path {
-        background: #fafafa;
         width: 36em;
         padding: 5px;
-        border: 2px solid #0259c4;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
         border-radius: 3px;
+        background: #fafafa;
+        vertical-align: middle;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border: 2px solid #0259c4;
       }
       #path:focus {
-        background: #fffff7;
         outline: 0;
+        background: #fffff7;
       }
-      #submit {
-        background: #0259c4;
-        cursor: pointer;
+      #submit,
+      #change {
         color: #fff;
-        padding: 5px 10px;
+        cursor: pointer;
+        padding: 4px 10px;
+        border-radius: 3px;
+        background: #0259c4;
+        vertical-align: middle;
+        -moz-border-radius: 3px;
         border: 2px solid #0259c4;
         -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
       }
     </style>
     <!--[if lte IE 9]>
@@ -56,6 +58,7 @@
       <div style="line-height: 40px; height: 40px">
         <input id="path" value="./vistas.jpg" title="图片地址" />
         <input id="submit" type="button" value="加 载" />
+        <input id="change" type="button" value="换 图" />
       </div>
       <div id="status" style="display: none">
         <p><strong>通过文件头信息获取尺寸： </strong><span id="statusReady"></span></p>
