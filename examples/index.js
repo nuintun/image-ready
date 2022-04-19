@@ -1,7 +1,7 @@
 /**
  * @module image-ready
  * @license MIT
- * @version 1.0.0
+ * @version 0.0.1
  * @author nuintun
  * @description A tiny library for get the natural size of the image before the image is loaded.
  * @see https://github.com/nuintun/image-ready#readme
@@ -130,61 +130,67 @@
       image.src = url;
     });
   }
-  var prevImgUrl;
   var path = $('path');
   var status = $('status');
   var submit = $('submit');
   var imageWrap = $('imageWrap');
-  var clsCache = $('clsCache');
   var statusLoad = $('statusLoad');
   var statusReady = $('statusReady');
+  var expand = 0;
+  function getImageURL(url) {
+    var regexp = /([?&]_=)[^&]*/;
+    var uuid = Date.now() + '-' + expand++;
+    if (regexp.test(url)) {
+      return url.replace(regexp, function (_match, key) {
+        return key + uuid;
+      });
+    }
+    return url + (/\?/.test(url) ? '&' : '?') + '_=' + uuid;
+  }
   function getResult(width, height, start) {
     var time = Date.now() - start;
     return 'width: ' + width + 'px; height: ' + height + 'px; time: ' + time + 'ms;';
   }
+  var prevImageURLs;
   submit.onclick = function () {
+    var url = path.value;
     var start = Date.now();
-    var imgUrl = path.value;
-    prevImgUrl = imgUrl;
+    var loadURL = getImageURL(url);
+    var readyURL = getImageURL(url);
     status.style.display = 'block';
     statusLoad.innerHTML = statusReady.innerHTML = 'Loading...';
-    imageWrap.innerHTML = '<img src="' + imgUrl + '" />';
-    // 使用占位方式快速获取大小
-    imageReady(imgUrl).then(
-      function (_a) {
-        var width = _a[0],
-          height = _a[1];
-        if (imgUrl === prevImgUrl) {
-          statusReady.innerHTML = getResult(width, height, start);
-        }
-      },
-      function () {
-        if (imgUrl === prevImgUrl) {
-          statusReady.innerHTML = 'Img Error!';
-        }
-      }
-    );
+    imageWrap.innerHTML = '<img src="' + loadURL + '" />';
+    // 缓存 URL 地址
+    prevImageURLs = [loadURL, readyURL];
     // 使用传统方式获取大小
-    imageLoad(imgUrl).then(
+    imageLoad(loadURL).then(
       function (_a) {
         var width = _a[0],
           height = _a[1];
-        if (imgUrl === prevImgUrl) {
+        if (loadURL === prevImageURLs[0]) {
           statusLoad.innerHTML = getResult(width, height, start);
         }
       },
       function () {
-        if (imgUrl === prevImgUrl) {
-          statusLoad.innerHTML = 'Img Error!';
+        if (loadURL === prevImageURLs[0]) {
+          statusLoad.innerHTML = 'Image Error!';
         }
       }
     );
-  };
-  clsCache.onclick = function () {
-    var imgUrl = path.value;
-    path.value = (imgUrl.split('?')[1] ? imgUrl.split('?')[0] : imgUrl) + '?v=' + new Date().getTime();
-    status.style.display = 'none';
-    imageWrap.innerHTML = '';
-    prevImgUrl = null;
+    // 使用占位方式快速获取大小
+    imageReady(readyURL).then(
+      function (_a) {
+        var width = _a[0],
+          height = _a[1];
+        if (readyURL === prevImageURLs[1]) {
+          statusReady.innerHTML = getResult(width, height, start);
+        }
+      },
+      function () {
+        if (readyURL === prevImageURLs[1]) {
+          statusReady.innerHTML = 'Image Error!';
+        }
+      }
+    );
   };
 });

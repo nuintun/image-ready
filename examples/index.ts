@@ -28,15 +28,25 @@ function imageLoad(url: string): Promise<[width: number, height: number]> {
   });
 }
 
-let prevImgUrl: string | null;
-
 const path = $<HTMLInputElement>('path');
 const status = $<HTMLDivElement>('status');
 const submit = $<HTMLInputElement>('submit');
 const imageWrap = $<HTMLDivElement>('imageWrap');
-const clsCache = $<HTMLAnchorElement>('clsCache');
 const statusLoad = $<HTMLSpanElement>('statusLoad');
 const statusReady = $<HTMLSpanElement>('statusReady');
+
+let expand = 0;
+
+function getImageURL(url: string): string {
+  const regexp = /([?&]_=)[^&]*/;
+  const uuid = Date.now() + '-' + expand++;
+
+  if (regexp.test(url)) {
+    return url.replace(regexp, (_match, key) => key + uuid);
+  }
+
+  return url + (/\?/.test(url) ? '&' : '?') + '_=' + uuid;
+}
 
 function getResult(width: number, height: number, start: number): string {
   const time = Date.now() - start;
@@ -44,49 +54,46 @@ function getResult(width: number, height: number, start: number): string {
   return 'width: ' + width + 'px; height: ' + height + 'px; time: ' + time + 'ms;';
 }
 
-submit.onclick = () => {
-  const start = Date.now();
-  const imgUrl = path.value;
+let prevImageURLs: [load: string, ready: string];
 
-  prevImgUrl = imgUrl;
+submit.onclick = () => {
+  const url = path.value;
+  const start = Date.now();
+  const loadURL = getImageURL(url);
+  const readyURL = getImageURL(url);
+
   status.style.display = 'block';
   statusLoad.innerHTML = statusReady.innerHTML = 'Loading...';
-  imageWrap.innerHTML = '<img src="' + imgUrl + '" />';
+  imageWrap.innerHTML = '<img src="' + loadURL + '" />';
 
-  // 使用占位方式快速获取大小
-  imageReady(imgUrl).then(
-    ([width, height]) => {
-      if (imgUrl === prevImgUrl) {
-        statusReady.innerHTML = getResult(width, height, start);
-      }
-    },
-    () => {
-      if (imgUrl === prevImgUrl) {
-        statusReady.innerHTML = 'Img Error!';
-      }
-    }
-  );
+  // 缓存 URL 地址
+  prevImageURLs = [loadURL, readyURL];
 
   // 使用传统方式获取大小
-  imageLoad(imgUrl).then(
+  imageLoad(loadURL).then(
     ([width, height]) => {
-      if (imgUrl === prevImgUrl) {
+      if (loadURL === prevImageURLs[0]) {
         statusLoad.innerHTML = getResult(width, height, start);
       }
     },
     () => {
-      if (imgUrl === prevImgUrl) {
-        statusLoad.innerHTML = 'Img Error!';
+      if (loadURL === prevImageURLs[0]) {
+        statusLoad.innerHTML = 'Image Error!';
       }
     }
   );
-};
 
-clsCache.onclick = () => {
-  const imgUrl = path.value;
-
-  path.value = (imgUrl.split('?')[1] ? imgUrl.split('?')[0] : imgUrl) + '?v=' + new Date().getTime();
-  status.style.display = 'none';
-  imageWrap.innerHTML = '';
-  prevImgUrl = null;
+  // 使用占位方式快速获取大小
+  imageReady(readyURL).then(
+    ([width, height]) => {
+      if (readyURL === prevImageURLs[1]) {
+        statusReady.innerHTML = getResult(width, height, start);
+      }
+    },
+    () => {
+      if (readyURL === prevImageURLs[1]) {
+        statusReady.innerHTML = 'Image Error!';
+      }
+    }
+  );
 };
