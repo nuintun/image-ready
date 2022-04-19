@@ -6,7 +6,7 @@
  * @see https://github.com/nuintun/image-ready
  */
 
-let running = false;
+let frameId: number;
 
 interface Inspector {
   ready: boolean;
@@ -39,7 +39,7 @@ function remove<T>(array: T[], index: number): T | undefined {
   }
 }
 
-function frame(): void {
+function inspect(): void {
   let i = 0;
 
   while (i < queue.length) {
@@ -55,9 +55,7 @@ function frame(): void {
   }
 
   if (queue.length > 0) {
-    requestAnimationFrame(frame);
-  } else {
-    running = false;
+    frameId = requestAnimationFrame(inspect);
   }
 }
 
@@ -71,8 +69,8 @@ function getImageHeigth(image: HTMLImageElement): number {
 
 /**
  * @function imageReady
- * @description It returns a promise that resolves to the width and height of the image at the given URL
- * @param url The image address
+ * @description Fast get image size.
+ * @param url The image url.
  */
 export default function imageReady(url: string): Promise<[width: number, height: number]> {
   return new Promise<[width: number, height: number]>((resolve, reject) => {
@@ -123,14 +121,12 @@ export default function imageReady(url: string): Promise<[width: number, height:
     // 设置图片地址
     image.src = url;
 
-    if (!image.complete && !inspector.ready) {
+    if (!inspector.ready && !image.complete) {
       queue.push(inspector);
 
-      if (!running) {
-        running = true;
+      cancelAnimationFrame(frameId);
 
-        requestAnimationFrame(frame);
-      }
+      frameId = requestAnimationFrame(inspect);
     }
   });
 }

@@ -19,7 +19,7 @@
    * @author nuintun
    * @see https://github.com/nuintun/image-ready
    */
-  var running = false;
+  var frameId;
   var queue = [];
   /**
    * @function remove
@@ -39,7 +39,7 @@
       return last;
     }
   }
-  function frame() {
+  function inspect() {
     var i = 0;
     while (i < queue.length) {
       var inspector = queue[i];
@@ -51,9 +51,7 @@
       }
     }
     if (queue.length > 0) {
-      requestAnimationFrame(frame);
-    } else {
-      running = false;
+      frameId = requestAnimationFrame(inspect);
     }
   }
   function getImageWidth(image) {
@@ -64,8 +62,8 @@
   }
   /**
    * @function imageReady
-   * @description It returns a promise that resolves to the width and height of the image at the given URL
-   * @param url The image address
+   * @description Fast get image size.
+   * @param url The image url.
    */
   function imageReady(url) {
     return new Promise(function (resolve, reject) {
@@ -104,12 +102,10 @@
       };
       // 设置图片地址
       image.src = url;
-      if (!image.complete && !inspector.ready) {
+      if (!inspector.ready && !image.complete) {
         queue.push(inspector);
-        if (!running) {
-          running = true;
-          requestAnimationFrame(frame);
-        }
+        cancelAnimationFrame(frameId);
+        frameId = requestAnimationFrame(inspect);
       }
     });
   }
