@@ -1,16 +1,24 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "newLine": "LF",
+    "strict": true,
     "pretty": true,
-    "target": "es5",
-    "module": "es6",
-    "sourceMap": false,
-    "declaration": true,
+    "newLine": "lf",
+    "target": "ES5",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "importHelpers": true,
     "noUnusedLocals": true,
-    "listEmittedFiles": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "Node",
     "noUnusedParameters": true,
-    "allowSyntheticDefaultImports": true
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
