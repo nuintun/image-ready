@@ -35,11 +35,9 @@ const imageWrap = $<HTMLDivElement>('imageWrap');
 const statusLoad = $<HTMLSpanElement>('statusLoad');
 const statusReady = $<HTMLSpanElement>('statusReady');
 
-let expand = 0;
-
 function getImageURL(url: string): string {
+  const uuid = Date.now();
   const regexp = /([?&]_=)[^&]*/;
-  const uuid = Date.now() + '-' + expand++;
 
   if (regexp.test(url)) {
     return url.replace(regexp, (_match, key) => key + uuid);

@@ -136,10 +136,9 @@
   var imageWrap = $('imageWrap');
   var statusLoad = $('statusLoad');
   var statusReady = $('statusReady');
-  var expand = 0;
   function getImageURL(url) {
+    var uuid = Date.now();
     var regexp = /([?&]_=)[^&]*/;
-    var uuid = Date.now() + '-' + expand++;
     if (regexp.test(url)) {
       return url.replace(regexp, function (_match, key) {
         return key + uuid;
