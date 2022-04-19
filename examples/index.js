@@ -151,43 +151,41 @@
     var time = Date.now() - start;
     return 'width: ' + width + 'px; height: ' + height + 'px; time: ' + time + 'ms;';
   }
-  var prevImageURLs;
+  var prevImageURL;
   submit.onclick = function () {
-    var url = path.value;
     var start = Date.now();
-    var loadURL = getImageURL(url);
-    var readyURL = getImageURL(url);
+    var url = getImageURL(path.value);
     status.style.display = 'block';
     statusLoad.innerHTML = statusReady.innerHTML = 'Loading...';
-    imageWrap.innerHTML = '<img src="' + loadURL + '" />';
+    imageWrap.innerHTML = '<img src="' + url + '" />';
     // 缓存 URL 地址
-    prevImageURLs = [loadURL, readyURL];
+    prevImageURL = url;
     // 使用传统方式获取大小
-    imageLoad(loadURL).then(
+    imageLoad(url).then(
       function (_a) {
         var width = _a[0],
           height = _a[1];
-        if (loadURL === prevImageURLs[0]) {
+        if (url === prevImageURL) {
           statusLoad.innerHTML = getResult(width, height, start);
         }
       },
       function () {
-        if (loadURL === prevImageURLs[0]) {
+        if (url === prevImageURL) {
           statusLoad.innerHTML = 'Image Error!';
         }
       }
     );
     // 使用占位方式快速获取大小
-    imageReady(readyURL).then(
+    imageReady(url).then(
       function (_a) {
         var width = _a[0],
           height = _a[1];
-        if (readyURL === prevImageURLs[1]) {
+        if (url === prevImageURL) {
           statusReady.innerHTML = getResult(width, height, start);
         }
       },
       function () {
-        if (readyURL === prevImageURLs[1]) {
+        if (url === prevImageURL) {
           statusReady.innerHTML = 'Image Error!';
         }
       }
