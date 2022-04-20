@@ -13,7 +13,7 @@
       a:hover {
         color: #900;
       }
-      .demoinfo {
+      .demoInfo {
         padding: 10px;
         border-radius: 5px;
         background: #f7f7f7;
@@ -47,16 +47,23 @@
         border: 2px solid #0259c4;
         -webkit-border-radius: 3px;
       }
+      #imageWrap > img {
+        width: 100%;
+      }
     </style>
     <!--[if lte IE 9]>
       <script defer type="text/javascript" src="./raf.js"></script>
     <![endif]-->
   </head>
   <body>
-    <div class="demoinfo">
+    <div class="demoInfo">
       <p><strong>演示：</strong></p>
       <div style="line-height: 40px; height: 40px">
-        <input id="path" value="./vistas.jpg" title="图片地址" />
+        <input
+          id="path"
+          title="图片地址"
+          value="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbbs.vivo.com.cn%2Fforum%2FgetPicture%3FfileId%3DwiwNWYCFW9ieGbWq%2F20180909%2F568edb0b22ea99e365c177dc658b6982.jpg&refer=http%3A%2F%2Fbbs.vivo.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652961409&t=63f341bae2d68fb9e41839ab2ef30cc6"
+        />
         <input id="submit" type="button" value="加 载" />
         <input id="change" type="button" value="换 图" />
       </div>

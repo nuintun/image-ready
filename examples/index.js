@@ -110,7 +110,11 @@
     });
   }
 
-  var images = ['./vistas.jpg', './game.jpg'];
+  var images = [
+    './game.jpg',
+    './vistas.jpg',
+    'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbbs.vivo.com.cn%2Fforum%2FgetPicture%3FfileId%3DwiwNWYCFW9ieGbWq%2F20180909%2F568edb0b22ea99e365c177dc658b6982.jpg&refer=http%3A%2F%2Fbbs.vivo.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1652961409&t=63f341bae2d68fb9e41839ab2ef30cc6'
+  ];
   function $(id) {
     return document.getElementById(id);
   }
